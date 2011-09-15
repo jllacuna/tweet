@@ -118,8 +118,8 @@
       }
     }
 
-    function maybe_https(url) {
-      return ('https:' == document.location.protocol) ? url.replace(/^http:/, 'https:') : url;
+    function is_https() {
+      return ('https:' == document.location.protocol);
     }
 
     function build_api_url() {
@@ -145,7 +145,8 @@
       o.source = item.source;
       o.screen_name = item.from_user || item.user.screen_name;
       o.avatar_size = s.avatar_size;
-      o.avatar_url = maybe_https(item.profile_image_url || item.user.profile_image_url);
+      o.avatar_url = is_https() ? (item.profile_image_url_https || item.user.profile_image_url_https)
+                                : (item.profile_image_url       || item.user.profile_image_url);
       o.retweet = typeof(item.retweeted_status) != 'undefined';
       o.tweet_time = parse_date(item.created_at);
       o.join_text = s.join_text == "auto" ? build_auto_join_text(item.text) : s.join_text;
